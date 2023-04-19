@@ -219,6 +219,15 @@ void *GB::zeropage_ptr() const {
 void *GB::oamram_ptr() const {
  return p_->cpu.oamram_ptr();
 }
+
+void GB::setPCBreakpoint(unsigned short offset) {
+  p_->cpu.breakpoints.insert(offset);
+}
+
+void GB::clearPCBreakpoints() {
+  p_->cpu.breakpoints.clear();
+}
+
 #endif
 
 }

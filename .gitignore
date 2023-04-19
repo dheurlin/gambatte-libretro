@@ -7,3 +7,6 @@
 *.bc
 .npmignore
 package.json
+compile_commands.json
+.cache/
+libgambatte/libretro/obj/

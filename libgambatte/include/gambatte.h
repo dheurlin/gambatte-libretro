@@ -132,6 +132,9 @@ public:
    void setGameShark(const std::string &codes);
 
    void clearCheats();
+
+   void setPCBreakpoint(unsigned short offset);
+   void clearPCBreakpoints(void);
    
 #ifdef __LIBRETRO__
    void *vram_ptr() const;
@@ -154,5 +157,7 @@ private:
 	GB & operator=(const GB &);
 };
 }
+
+#define BREAKPOINT_HIT -2
 
 #endif

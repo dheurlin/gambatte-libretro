@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdlib.h>
 
 #include <libretro.h>
@@ -2654,7 +2655,7 @@ size_t retro_get_memory_size(unsigned id)
    return 0;
 }
 
-void retro_run()
+unsigned retro_run()
 {
    static uint64_t samples_count = 0;
    static uint64_t frames_count = 0;
@@ -2667,7 +2668,7 @@ void retro_run()
    {
       video_cb(NULL, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_PITCH * sizeof(gambatte::video_pixel_t));
       frames_count++;
-      return;
+      return 0;
    }
 
    union
@@ -2677,8 +2678,18 @@ void retro_run()
    } static sound_buf;
    unsigned samples = SOUND_SAMPLES_PER_RUN;
 
-   while (gb.runFor(video_buf, VIDEO_PITCH, sound_buf.u32, SOUND_BUFF_SIZE, samples) == -1)
+   while (true)
    {
+      long res = gb.runFor(video_buf, VIDEO_PITCH, sound_buf.u32, SOUND_BUFF_SIZE, samples);
+
+      if (res == BREAKPOINT_HIT) {
+        return -1;
+      }
+
+      if (res != -1) {
+        break;
+      }
+
       if (use_cc_resampler)
          CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
       else
@@ -2724,7 +2735,25 @@ void retro_run()
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
       check_variables(false);
+
+   return 0;
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
+
+void ext_setPCBreakpoint(unsigned short offset) {
+  if (!rom_loaded) {
+    std::cout << "Failed to set breakpoint: ROM not loaded" << std::endl;
+    return;
+  }
+  gb.setPCBreakpoint(offset);
+}
+
+void ext_clearPCBreakpoints() {
+  if (!rom_loaded) {
+    std::cout << "Failed to set breakpoint: ROM not loaded" << std::endl;
+    return;
+  }
+  gb.clearPCBreakpoints();
+}
 

@@ -3890,7 +3890,7 @@ RETRO_API void retro_reset(void);
  * a frame if GET_CAN_DUPE returns true.
  * In this case, the video callback can take a NULL argument for data.
  */
-RETRO_API void retro_run(void);
+RETRO_API unsigned retro_run(void);
 
 /* Returns the amount of data the implementation requires to serialize
  * internal state (save states).
@@ -3929,6 +3929,9 @@ RETRO_API unsigned retro_get_region(void);
 /* Gets region of memory. */
 RETRO_API void *retro_get_memory_data(unsigned id);
 RETRO_API size_t retro_get_memory_size(unsigned id);
+
+RETRO_API void ext_setPCBreakpoint(unsigned short offset);
+RETRO_API void ext_clearPCBreakpoints();
 
 #ifdef __cplusplus
 }

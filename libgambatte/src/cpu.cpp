@@ -43,14 +43,14 @@ CPU::CPU()
 }
 
 long CPU::runFor(unsigned long const cycles) {
-	process(cycles);
+  bool hitBreakpoint = process(cycles);
 
 	long const csb = mem_.cyclesSinceBlit(cycleCounter_);
 
 	if (cycleCounter_ & 0x80000000)
 		cycleCounter_ = mem_.resetCounters(cycleCounter_);
 
-	return csb;
+  return hitBreakpoint ? BREAKPOINT_HIT : csb;
 }
 
 enum { hf2_hcf = 0x200, hf2_subf = 0x400, hf2_incf = 0x800 };
@@ -486,7 +486,7 @@ void CPU::loadState(SaveState const &state) {
 	PC_MOD(high << 8 | low); \
 } while (0)
 
-void CPU::process(unsigned long const cycles) {
+bool CPU::process(unsigned long const cycles) {
 	mem_.setEndtime(cycleCounter_, cycles);
 	mem_.updateInput();
 
@@ -1983,6 +1983,13 @@ void CPU::process(unsigned long const cycles) {
 				rst_n(0x38);
 				break;
 			}
+
+      if (breakpoints.find(pc) != breakpoints.end()) {
+        pc_ = pc;
+        cycleCounter = mem_.event(cycleCounter);
+        cycleCounter_ = cycleCounter;
+        return true;
+      }
 		}
 
 		pc_ = pc;
@@ -1991,6 +1998,7 @@ void CPU::process(unsigned long const cycles) {
 
 	a_ = a;
 	cycleCounter_ = cycleCounter;
+  return false;
 }
 
 }
