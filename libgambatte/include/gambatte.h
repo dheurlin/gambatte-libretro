@@ -146,6 +146,7 @@ public:
    void *rombank1_ptr() const;
    void *zeropage_ptr() const;
    void *oamram_ptr() const;
+   unsigned short get_program_counter();
 #endif
 
 private:

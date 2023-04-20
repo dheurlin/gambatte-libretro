@@ -228,6 +228,10 @@ void GB::clearPCBreakpoints() {
   p_->cpu.breakpoints.clear();
 }
 
+unsigned short GB::get_program_counter() {
+  return p_->cpu.get_program_counter();
+}
+
 #endif
 
 }

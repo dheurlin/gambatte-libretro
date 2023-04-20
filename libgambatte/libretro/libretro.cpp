@@ -2752,9 +2752,17 @@ void ext_set_PC_breakpoint(unsigned short offset) {
 
 void ext_clear_PC_breakpoints() {
   if (!rom_loaded) {
-    std::cout << "Failed to set breakpoint: ROM not loaded" << std::endl;
+    std::cout << "Failed to clear breakpoints: ROM not loaded" << std::endl;
     return;
   }
   gb.clearPCBreakpoints();
 }
 
+
+unsigned short ext_get_program_counter() {
+  if (!rom_loaded) {
+    gambatte_log(RETRO_LOG_ERROR, "Failed to get program counter: ROM not loaded\n");
+    return -1;
+  }
+  return gb.get_program_counter();
+}

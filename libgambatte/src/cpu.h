@@ -57,6 +57,7 @@ public:
    void *rombank1_ptr() const { return mem_.rombank1_ptr(); }
    void *zeropage_ptr() const { return mem_.zeropage_ptr(); }
    void *oamram_ptr() const { return mem_.oamram_ptr(); }
+   unsigned short get_program_counter() { return pc_; }
 #endif
 
 	void setVideoBuffer(video_pixel_t *videoBuf, std::ptrdiff_t pitch) {

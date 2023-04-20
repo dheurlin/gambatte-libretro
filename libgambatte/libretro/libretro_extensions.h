@@ -9,6 +9,7 @@ extern "C" {
 
 void ext_set_PC_breakpoint(unsigned short offset);
 void ext_clear_PC_breakpoints();
+unsigned short ext_get_program_counter();
 
 #ifdef __cplusplus
 }
