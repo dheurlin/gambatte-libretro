@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-void ext_setPCBreakpoint(unsigned short offset);
-void ext_clearPCBreakpoints();
+void ext_set_PC_breakpoint(unsigned short offset);
+void ext_clear_PC_breakpoints();
 
 #ifdef __cplusplus
 }
