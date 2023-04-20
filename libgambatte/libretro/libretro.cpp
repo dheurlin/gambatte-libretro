@@ -4,6 +4,7 @@
 #include <libretro.h>
 #include <libretro_core_options.h>
 #include "gambatte_log.h"
+#include "libretro_extensions.h"
 #include "blipper.h"
 #include "cc_resampler.h"
 #include "gambatte.h"
@@ -2683,7 +2684,7 @@ unsigned retro_run()
       long res = gb.runFor(video_buf, VIDEO_PITCH, sound_buf.u32, SOUND_BUFF_SIZE, samples);
 
       if (res == BREAKPOINT_HIT) {
-        return -1;
+        return BREAKPOINT_HIT;
       }
 
       if (res != -1) {

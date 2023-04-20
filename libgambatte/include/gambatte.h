@@ -158,6 +158,4 @@ private:
 };
 }
 
-#define BREAKPOINT_HIT -2
-
 #endif

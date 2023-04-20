@@ -19,6 +19,7 @@
 #include "cpu.h"
 #include "gambatte-memory.h"
 #include "savestate.h"
+#include "libretro_extensions.h"
 
 namespace gambatte {
 
