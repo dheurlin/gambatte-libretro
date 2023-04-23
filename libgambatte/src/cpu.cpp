@@ -18,6 +18,7 @@
 
 #include "cpu.h"
 #include "gambatte-memory.h"
+#include "gambatte_log.h"
 #include "savestate.h"
 #include "libretro_extensions.h"
 
@@ -1985,10 +1986,12 @@ bool CPU::process(unsigned long const cycles) {
 				break;
 			}
 
-      if (breakpoints.find(pc) != breakpoints.end()) {
+      unsigned char bank = mem_.get_rombank();
+      if (breakpoints.find((bank << 16) + pc) != breakpoints.end()) { 
         pc_ = pc;
         cycleCounter = mem_.event(cycleCounter);
         cycleCounter_ = cycleCounter;
+        gambatte_log(RETRO_LOG_INFO, "Break at PC=%#04x, bank=%#02x\n", pc, mem_.get_rombank());
         return true;
       }
 		}

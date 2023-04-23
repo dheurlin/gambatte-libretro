@@ -133,7 +133,7 @@ public:
 
    void clearCheats();
 
-   void setPCBreakpoint(unsigned short offset);
+   void setPCBreakpoint(unsigned short bank, unsigned short offset);
    void clearPCBreakpoints(void);
    
 #ifdef __LIBRETRO__

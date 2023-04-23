@@ -101,7 +101,7 @@ public:
 
 	Memory mem_;
 
-  std::set<unsigned short> breakpoints;
+  std::set<unsigned int> breakpoints;
 private:
 	unsigned long cycleCounter_;
 	unsigned short pc_;

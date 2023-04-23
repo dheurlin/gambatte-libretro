@@ -220,8 +220,8 @@ void *GB::oamram_ptr() const {
  return p_->cpu.oamram_ptr();
 }
 
-void GB::setPCBreakpoint(unsigned short offset) {
-  p_->cpu.breakpoints.insert(offset);
+void GB::setPCBreakpoint(unsigned short bank, unsigned short offset) {
+  p_->cpu.breakpoints.insert((bank << 16) + offset);
 }
 
 void GB::clearPCBreakpoints() {

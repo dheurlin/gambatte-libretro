@@ -2742,12 +2742,12 @@ unsigned retro_run()
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
 
-void ext_set_PC_breakpoint(unsigned short offset) {
+void ext_set_PC_breakpoint(unsigned short bank, unsigned short offset) {
   if (!rom_loaded) {
     std::cout << "Failed to set breakpoint: ROM not loaded" << std::endl;
     return;
   }
-  gb.setPCBreakpoint(offset);
+  gb.setPCBreakpoint(bank, offset);
 }
 
 void ext_clear_PC_breakpoints() {

@@ -48,6 +48,9 @@ namespace gambatte
          virtual bool isAddressWithinAreaRombankCanBeMappedTo(unsigned addr, unsigned bank) const {
             return (addr< 0x4000) == (bank == 0);
          }
+         virtual unsigned char getRomBank() {
+           return 0;
+         }
    };
    class Mbc0 : public DefaultMbc {
       MemPtrs &memptrs;
@@ -75,13 +78,13 @@ namespace gambatte
 
    class Mbc1 : public DefaultMbc {
       MemPtrs &memptrs;
-      unsigned char rombank;
       unsigned char rambank;
       bool enableRam;
       bool rambankMode;
       static unsigned adjustedRombank(unsigned bank) { return (bank & 0x1F) ? bank : bank | 1; }
       void setRambank() const { memptrs.setRambank(enableRam ? MemPtrs::READ_EN | MemPtrs::WRITE_EN : 0, rambank & (rambanks(memptrs) - 1)); }
       void setRombank() const { memptrs.setRombank(adjustedRombank(rombank) & (rombanks(memptrs) - 1)); }
+      unsigned char rombank;
       public:
       explicit Mbc1(MemPtrs &memptrs)
          : memptrs(memptrs),
@@ -91,6 +94,9 @@ namespace gambatte
          rambankMode(false)
       {
       }
+     virtual unsigned char getRomBank() {
+       return rombank;
+     }
       virtual void romWrite(const unsigned P, const unsigned data) {
          switch (P >> 13 & 3) {
             case 0:
@@ -156,6 +162,9 @@ namespace gambatte
          rombank0Mode(false)
       {
       }
+     virtual unsigned char getRomBank() {
+       return rombank;
+     }
       virtual void romWrite(const unsigned P, const unsigned data) {
          switch (P >> 13 & 3) {
             case 0:
@@ -231,9 +240,9 @@ namespace gambatte
    class Mbc3 : public DefaultMbc {
       MemPtrs &memptrs;
       Rtc *const rtc;
-      unsigned char rombank;
       unsigned char rambank;
       bool enableRam;
+      unsigned char rombank;
       void setRambank() const {
          unsigned flags = enableRam ? MemPtrs::READ_EN | MemPtrs::WRITE_EN : 0;
          if (rtc) {
@@ -252,6 +261,9 @@ namespace gambatte
          enableRam(false)
       {
       }
+     virtual unsigned char getRomBank() {
+       return rombank;
+     }
       virtual void romWrite(const unsigned P, const unsigned data) {
          switch (P >> 13 & 3) {
             case 0:
@@ -309,6 +321,9 @@ namespace gambatte
          rambankMode(false)
       {
       }
+     virtual unsigned char getRomBank() {
+       return rombank;
+     }
       virtual void romWrite(const unsigned P, const unsigned data) {
          switch (P >> 13 & 3) {
             case 0:
@@ -378,6 +393,9 @@ namespace gambatte
          ramflag_(0)
       {
       }
+     virtual unsigned char getRomBank() {
+       return rombank_;
+     }
       virtual void romWrite(unsigned const p, unsigned const data) {
          switch (p >> 13 & 3) {
          case 0:
@@ -434,6 +452,9 @@ namespace gambatte
          hasRumble(rumble)
       {
       }
+     virtual unsigned char getRomBank() {
+       return rombank;
+     }
       virtual void romWrite(const unsigned P, const unsigned data) {
          switch (P >> 12 & 0x7) {
             case 0x0:
@@ -710,6 +731,11 @@ namespace gambatte
           }
 
        ggUndoList_.clear();
+   }
+
+   unsigned char Cartridge::get_rombank()
+   {
+     return mbc->getRomBank();
    }
 
 }

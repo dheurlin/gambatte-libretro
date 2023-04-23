@@ -37,6 +37,7 @@ namespace gambatte
          virtual void saveState(SaveState::Mem &ss) const {};
          virtual void loadState(const SaveState::Mem &ss) {};
          virtual bool isAddressWithinAreaRombankCanBeMappedTo(unsigned address, unsigned rombank) const = 0;
+         virtual unsigned char getRomBank();
    };
 
    class Cartridge
@@ -145,6 +146,8 @@ namespace gambatte
          // Not endian-safe at all, but hey.
          void *rtcdata_ptr();
          unsigned rtcdata_size();
+
+         unsigned char get_rombank();
 
       private:
          struct AddrData

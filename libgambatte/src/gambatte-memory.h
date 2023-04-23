@@ -139,6 +139,7 @@ public:
 	void updateInput();
 
    int loadROM(const void *romdata, unsigned int romsize, unsigned int forceModel, const bool multicartCompat);
+   unsigned char get_rombank() { return cart_.get_rombank(); };
 
 private:
 	Cartridge cart_;
